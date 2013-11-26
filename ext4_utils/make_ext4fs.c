@@ -1,4 +1,4 @@
-/*
+dentries[i].mtime = stat.st_mtime;/*
  * Copyright (C) 2010 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -164,6 +164,8 @@ static u32 build_directory_structure(const char *full_path, const char *dir_path
 		dentries[i].size = stat.st_size;
 		dentries[i].mode = stat.st_mode & (S_ISUID|S_ISGID|S_ISVTX|S_IRWXU|S_IRWXG|S_IRWXO);
 		dentries[i].mtime = stat.st_mtime;
+		dentries[i].uid  = stat.st_uid;
+		dentries[i].gid  = stat.st_gid;
 		uint64_t capabilities;
 		if (fs_config_func != NULL) {
 #ifdef ANDROID
@@ -262,8 +264,9 @@ static u32 build_directory_structure(const char *full_path, const char *dir_path
 		} else if (dentries[i].file_type == EXT4_FT_SYMLINK) {
 			entry_inode = make_link(dentries[i].link);
 		} else {
-			error("unknown file type on %s", dentries[i].path);
+			printf("unknown file type on %s", dentries[i].path);
 			entry_inode = 0;
+			continue;
 		}
 		*dentries[i].inode = entry_inode;
 
