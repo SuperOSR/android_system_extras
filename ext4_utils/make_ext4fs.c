@@ -164,8 +164,10 @@ static u32 build_directory_structure(const char *full_path, const char *dir_path
 		dentries[i].size = stat.st_size;
 		dentries[i].mode = stat.st_mode & (S_ISUID|S_ISGID|S_ISVTX|S_IRWXU|S_IRWXG|S_IRWXO);
 		dentries[i].mtime = stat.st_mtime;
+#ifdef TARGET_BOARD_FIBER
 		dentries[i].uid  = stat.st_uid;
 		dentries[i].gid  = stat.st_gid;
+#endif
 		uint64_t capabilities;
 		if (fs_config_func != NULL) {
 #ifdef ANDROID
@@ -264,9 +266,15 @@ static u32 build_directory_structure(const char *full_path, const char *dir_path
 		} else if (dentries[i].file_type == EXT4_FT_SYMLINK) {
 			entry_inode = make_link(dentries[i].link);
 		} else {
+#ifdef TARGET_BOARD_FIBER
 			printf("unknown file type on %s", dentries[i].path);
+#else
+			error("unknown file type on %s", dentries[i].path);
+#endif
 			entry_inode = 0;
+#ifdef TARGET_BOARD_FIBER
 			continue;
+#endif
 		}
 		*dentries[i].inode = entry_inode;
 

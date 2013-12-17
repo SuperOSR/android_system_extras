@@ -25,6 +25,11 @@ LOCAL_MODULE := libext4_utils_host
 LOCAL_STATIC_LIBRARIES := \
     libsparse_host \
     libz
+
+ifeq ($(TARGET_BOARD_PLATFORM), fiber)
+    LOCAL_CFLAGS += -DTARGET_BOARD_FIBER
+endif
+
 ifneq ($(HOST_OS),windows)
   LOCAL_STATIC_LIBRARIES += libselinux
 endif
@@ -38,6 +43,11 @@ LOCAL_STATIC_LIBRARIES += \
     libext4_utils_host \
     libsparse_host \
     libz
+    
+ifeq ($(TARGET_BOARD_PLATFORM), fiber)
+    LOCAL_CFLAGS += -DTARGET_BOARD_FIBER
+endif
+
 ifeq ($(HOST_OS),windows)
   LOCAL_LDLIBS += -lws2_32
 else
@@ -60,6 +70,11 @@ LOCAL_SHARED_LIBRARIES := \
     libselinux \
     libsparse \
     libz
+    
+ifeq ($(TARGET_BOARD_PLATFORM), fiber)
+    LOCAL_CFLAGS += -DTARGET_BOARD_FIBER
+endif
+
 include $(BUILD_SHARED_LIBRARY)
 
 
@@ -69,6 +84,11 @@ LOCAL_MODULE := libext4_utils_static
 LOCAL_STATIC_LIBRARIES += \
     libselinux \
     libsparse_static
+    
+ifeq ($(TARGET_BOARD_PLATFORM), fiber)
+    LOCAL_CFLAGS += -DTARGET_BOARD_FIBER
+endif
+
 include $(BUILD_STATIC_LIBRARY)
 
 
@@ -79,6 +99,11 @@ LOCAL_SHARED_LIBRARIES := \
     libext4_utils \
     libselinux \
     libz
+    
+ifeq ($(TARGET_BOARD_PLATFORM), fiber)
+    LOCAL_CFLAGS += -DTARGET_BOARD_FIBER
+endif
+
 include $(BUILD_EXECUTABLE)
 
 
